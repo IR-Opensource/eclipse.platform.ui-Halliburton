@@ -32,11 +32,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.MY_PAT }}
         run: |
-          git remote add upstream https://github.com/Halliburton-Landmark/eclipse.platform.git
+          git remote add upstream https://github.com/Halliburton-Landmark/eclipse.platform.ui.git
           git fetch upstream
           git checkout dsg-4_30
           git merge upstream/dsg-4_30 --no-edit
-          git push https://x-access-token:${GITHUB_TOKEN}@github.com/ir-pranesh-shrestha/eclipse.platform-Halliburton dsg-4_30
+          git push https://x-access-token:${GITHUB_TOKEN}github.com/ir-pranesh-shrestha/eclipse.platform.ui-Halliburton dsg-4_30
           
       - name: Setup PSE
         uses: invisirisk/pse-action@latest
