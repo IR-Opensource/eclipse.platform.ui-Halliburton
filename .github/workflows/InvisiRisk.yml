@@ -2,7 +2,7 @@ name: Halliburton x InvisiRisk
 
 on:
   schedule:
-    - cron: '55 3 * * *'
+    - cron: '45 0 * * 1'  # every Monday at 12:45 AM UTC (6:30 AM NPT)
   workflow_dispatch:
 
 permissions:
