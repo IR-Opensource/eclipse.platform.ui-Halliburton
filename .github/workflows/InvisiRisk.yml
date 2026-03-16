@@ -35,10 +35,6 @@ jobs:
           distribution: 'temurin'  # Or 'zulu', 'adopt', etc.
           java-version: '17'       # Use the Java version you need
 
-      - name: Build all modules except jface
-        run: |
-            mvn clean install -DskipTests -pl !bundles/org.eclipse.jface
-
      # - name: Run tests for stable modules
       #  run: |
        #   mvn verify -DfailIfNoTests=false -DtestFailureIgnore=false
