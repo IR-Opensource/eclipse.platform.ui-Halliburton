@@ -17,6 +17,12 @@ jobs:
     name: Sync fork and Run build
 
     steps:
+      # ============= InvisiRisk Setup =============
+      - name: Setup PSE
+        uses: invisirisk/pse-action@latest
+        with:
+          app_token: ${{secrets.IR_API_KEY}}
+      # ============= InvisiRisk Setup End =============
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
@@ -44,3 +50,10 @@ jobs:
       - name: Try running tests in problematic modules (non-blocking)
         run: |
           mvn verify -DfailIfNoTests=false -DtestFailureIgnore=true -pl ua/org.eclipse.ua.tests,ua/org.eclipse.ua.tests.doc || echo "Tests failed or module not found, ignoring"
+      # ============= InvisiRisk Cleanup =============
+      - name: Cleanup PSE
+        if: always()
+        uses: invisirisk/pse-action@latest
+        with:
+          cleanup: "true"
+      # ============= InvisiRisk Cleanup End =============
