@@ -23,27 +23,6 @@ jobs:
           persist-credentials: false
           fetch-depth: 0
 
-      - name: Set up Git
-        run: |
-         git config user.name "ir-pranesh-shrestha"
-          git config user.email "pranesh.shrestha@invisirisk.com"
-          
-      - name: Add upstream and sync fork
-        env:
-          GITHUB_TOKEN: ${{ secrets.MY_PAT }}
-        run: |
-          git remote add upstream https://github.com/Halliburton-Landmark/eclipse.platform.ui.git
-          git fetch upstream
-          git checkout dsg-4_30
-          git merge upstream/dsg-4_30 --no-edit
-          git push https://x-access-token:${GITHUB_TOKEN}@github.com/ir-pranesh-shrestha/eclipse.platform.ui-Halliburton dsg-4_30
-          
-      - name: Setup PSE
-        uses: invisirisk/pse-action@latest
-        with:
-          api_url: "https://app.invisirisk.com"
-          app_token: ${{ secrets.IR_API_KEY_PROD }}
-
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
@@ -65,24 +44,3 @@ jobs:
       - name: Try running tests in problematic modules (non-blocking)
         run: |
           mvn verify -DfailIfNoTests=false -DtestFailureIgnore=true -pl ua/org.eclipse.ua.tests,ua/org.eclipse.ua.tests.doc || echo "Tests failed or module not found, ignoring"
-
-      - name: Cleanup PSE
-        if: always()
-        uses: invisirisk/pse-action@latest
-        with:
-          cleanup: "true"
-
-  gather_analytics:
-    runs-on: ubuntu-latest
-    name: Gather Analytics
-    needs: sync-and-build
-    if: always()
-    steps:
-      - name: Gather Status
-        uses: invisirisk/pse-action@latest
-        with:
-          api_url: "https://app.invisirisk.com"
-          app_token: ${{ secrets.IR_API_KEY_PROD }}
-          send_job_status: "true"
-          debug: "true"
-
